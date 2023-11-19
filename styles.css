@@ -10,3 +10,20 @@ body {
 h2 {
     color: blue;
 }
+
+#weatherResults {
+    background-color: aqua;
+}
+
+#locationResults {
+    background-color: yellow;
+}
+
+#tempResults {
+    background-color: violet;
+}
+
+#currentConditionDiv {
+    display: flex;
+    flex-direction: row;
+}
