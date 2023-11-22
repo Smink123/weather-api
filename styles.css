@@ -1,10 +1,66 @@
+@font-face {
+    font-family: 'UncutSans';
+    src: url('UncutSans-Variable.ttf') format('truetype')
+}
+
+* {
+    box-sizing: border-box;
+}
+
 body {
-    background-color: yellowgreen;
     display: flex;
     justify-content: center;
     align-items: center;
     font-family: Arial, Helvetica, sans-serif;
     flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    font-family: 'UncutSans', sans-serif;
+    font-weight:100;
+}
+
+#landingPage {
+    background: rgb(0,0,0);
+    background: linear-gradient(90deg, rgba(0,0,0,1) 50%, rgba(64,0,255,1) 73%, rgba(255,0,0,1) 100%);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#landingPage p, input:focus, button:hover {
+    opacity: 1;
+    outline: none;
+}
+
+#landingPage p, label, input, button {
+    color: white;
+    font-size: 4rem;
+    margin: 0;
+}
+
+label {
+    opacity: 0.5;
+}
+
+input, button {
+    background-color: transparent;
+    border: white 1px solid;
+    border-radius: 30px;
+    color: white;
+    font-family: 'UncutSans', sans-serif;
+    font-weight:100;
+    opacity: 0.5;
+    padding: 10px;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+    margin-top: 25px;
 }
 
 h2 {
