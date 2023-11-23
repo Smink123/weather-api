@@ -8,19 +8,17 @@
 }
 
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: Arial, Helvetica, sans-serif;
-    flex-direction: column;
     width: 100%;
     height: 100vh;
     margin: 0;
     font-family: 'UncutSans', sans-serif;
     font-weight:100;
+    background-color: tomato;
+    display: flex;
+    flex-direction: column;
 }
 
-#landingPage {
+#searchAreaLarge {
     background: rgb(0,0,0);
     background: linear-gradient(90deg, rgba(0,0,0,1) 50%, rgba(64,0,255,1) 73%, rgba(255,0,0,1) 100%);
     width: 100%;
@@ -43,14 +41,15 @@ body {
     align-items: center;
     background-color: black;
     padding: 20px;
+    height: auto;
 }
 
-#landingPage p, input:focus, button:hover {
+#searchAreaLarge p, input:focus, button:hover {
     opacity: 1;
     outline: none;
 }
 
-#landingPage p, label, input, button {
+#searchAreaLarge p, label, input, button {
     color: white;
     font-size: 4rem;
     margin: 0;
@@ -83,24 +82,38 @@ button {
     padding: 0;
 }
 
-h2 {
-    color: blue;
-}
-
 #weatherResults {
-    background-color: aqua;
+    background-color:violet;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding: 20px 0 20px 0;
 }
 
-#locationResults {
-    background-color: yellow;
+#weatherResults div {
+    width: 100%;
+    border: 1px solid black;
+    background-color: transparent;
 }
 
-#tempResults {
-    background-color: violet;
+#locationSection {
+    height: 25%;
+    display: flex;
+    flex-direction: row;
 }
 
-#currentConditionDiv {
+#locationSection div,  #forecastSection div {
+    flex: 1;
+    background-color: antiquewhite;
+}
+
+#weatherSection {
+    height: 50%;
+}
+
+#forecastSection {
+    height: 25%;
     display: flex;
     flex-direction: row;
 }

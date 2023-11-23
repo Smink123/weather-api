@@ -1,26 +1,34 @@
 //create specific objects and loop through them to display them
-const landingPage = document.getElementById('landingPage')
+const landingPage = document.getElementById("searchAreaLarge");
 const searchedArea = document.getElementById("searchLocation");
 const submitLocation = document.getElementById("submitLocation");
 const resultsArea = document.getElementById("weatherResults");
-const searchBarArea = document.getElementById('searchArea');
-const greeting = document.querySelector('#landingPage p');
-const inputLabel = document.querySelector('#searchArea label')
+const searchBarArea = document.getElementById("searchArea");
+const greeting = document.querySelector("#searchAreaLarge p");
+const inputLabel = document.querySelector("#searchArea label");
 
 const weatherApiKey = "303a084ecffd4c6d868113603231311";
 
+resultsArea.style.display = 'none'
+
+greeting.textContent = landingGreeting();
+
 submitLocation.addEventListener("click", function () {
   //change structure of page:
-  landingPage.style.height = 'auto'
-  searchBarArea.classList.add('searchBarAfter')
-  inputLabel.textContent = 'enter location: '
-  greeting.textContent = ''
-  resultsArea.style.height = '100vh'
+  inputLabel.style.fontSize = '1.5rem'
+  submitLocation.style.fontSize = '1.5rem'
+  searchedArea.style.fontSize = '1.5rem'
+  searchedArea.style.height = 'auto'
+  landingPage.style.height = "auto";
+  searchBarArea.classList.add("searchBarAfter");
+  resultsArea.style.display = 'flex'
+  inputLabel.textContent = "enter location: ";
+  greeting.textContent = "";
 
   //Reset results:
   const weatherLocation = search();
   searchedArea.value = "";
-  resultsArea.textContent = "";
+  /*resultsArea.textContent = "";*/
 
   async function getWeather() {
     try {
@@ -34,9 +42,9 @@ submitLocation.addEventListener("click", function () {
       //objects for necessary info:
 
       //current weather info:
-      const latestWeather = currentTemperature(weatherData)
+      const latestWeather = currentTemperature(weatherData);
       //location info
-      const city = locationInfo(weatherData)
+      const city = locationInfo(weatherData);
 
       //3 day forecast
       const dayOne = dailyForecast(weatherData, 0);
@@ -48,52 +56,6 @@ submitLocation.addEventListener("click", function () {
       console.log(latestWeather);
       console.log(city);
 
-      displayData("div", "", resultsArea, "locationResults");
-
-      displayData("p", areaInfo.city, locationResults, "city");
-      displayData("p", areaInfo.region, locationResults, "region");
-      displayData("p", areaInfo.country, locationResults, "country");
-      displayData("p", areaInfo.time, locationResults, "localTime");
-
-      displayData("div", "", resultsArea, "tempResults");
-
-      displayData("div", "", tempResults, "currentConditionDiv");
-      displayData(
-        "p",
-        weatherData.current.condition.text,
-        currentConditionDiv,
-        "condition"
-      );
-      displayImage(
-        weatherData.current.condition.icon,
-        currentConditionDiv,
-        "conditionIcon"
-      );
-
-      displayData(
-        "p",
-        `Temp (celcius): ${currentTemp.currentCelcius}`,
-        tempResults,
-        "tempCelcius"
-      );
-      displayData(
-        "p",
-        `Feels like (celcius): ${currentTemp.feelsLikeCelcius}`,
-        tempResults,
-        "feelsLikeCelcius"
-      );
-      displayData(
-        "p",
-        `Temp (farenheight): ${currentTemp.currentFarenheight}`,
-        tempResults,
-        "tempFarenheight"
-      );
-      displayData(
-        "p",
-        `Temp (farenheight): ${currentTemp.feelsLikeFarenheight}`,
-        tempResults,
-        "feelsLikeFarenheight"
-      );
     } catch (error) {
       console.error("Error fetching weather data:", error);
     }
@@ -143,7 +105,7 @@ function locationInfo(api) {
     country: api.location.country,
     time: api.location.localtime,
   };
-  return areaInfo
+  return areaInfo;
 }
 
 function currentTemperature(api) {
@@ -153,10 +115,23 @@ function currentTemperature(api) {
     feelsLikeCelcius: api.current.feelslike_c,
     feelsLikeFarenheight: api.current.feelslike_f,
   };
-  return currentTemp
+  return currentTemp;
 }
 
-//impliment function to convert the image src obtained by the original weatherData object to own custom icons. 
+function landingGreeting() {
+  const d = new Date();
+  let hour = d.getHours();
+
+  if (hour >= 0 && hour < 12) {
+    return "good morning!";
+  } else if (hour >= 12 && hour < 17) {
+    return "good afternoon!";
+  } else {
+    return "good evening!";
+  }
+}
+
+//impliment function to convert the image src obtained by the original weatherData object to own custom icons.
 //Do this by using this link: https://www.weatherapi.com/docs/weather_conditions.json
 
 //e.g. if weatherData.condition === 'Light snow showers' {
