@@ -3,11 +3,21 @@ const landingPage = document.getElementById('landingPage')
 const searchedArea = document.getElementById("searchLocation");
 const submitLocation = document.getElementById("submitLocation");
 const resultsArea = document.getElementById("weatherResults");
+const searchBarArea = document.getElementById('searchArea');
+const greeting = document.querySelector('#landingPage p');
+const inputLabel = document.querySelector('#searchArea label')
 
 const weatherApiKey = "303a084ecffd4c6d868113603231311";
 
 submitLocation.addEventListener("click", function () {
-  landingPage.style.display = 'none'
+  //change structure of page:
+  landingPage.style.height = 'auto'
+  searchBarArea.classList.add('searchBarAfter')
+  inputLabel.textContent = 'enter location: '
+  greeting.textContent = ''
+  resultsArea.style.height = '100vh'
+
+  //Reset results:
   const weatherLocation = search();
   searchedArea.value = "";
   resultsArea.textContent = "";
