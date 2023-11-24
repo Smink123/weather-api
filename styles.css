@@ -88,7 +88,7 @@ button {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    padding: 20px 0 20px 0;
+    padding: 20px 100px 20px 100px;
 }
 
 #weatherResults div {
@@ -97,16 +97,54 @@ button {
     background-color: transparent;
 }
 
+/* standard font size */
+#locationSection p, #weatherSection p, #forecastSection p {
+    margin: 5px;
+    font-size: 1.5rem;
+}
+
+/* top date header */
+
 #locationSection {
     height: 25%;
     display: flex;
     flex-direction: row;
 }
 
+#townSide, #dateSide {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#townSide > :first-child, #dateSide > :first-child, #weatherSection > :first-child {
+    font-size: 4rem;
+}
+
+#dateSide {
+    align-items: flex-end;
+}
+
 #locationSection div,  #forecastSection div {
     flex: 1;
     background-color: antiquewhite;
 }
+
+/* results area */
+
+#weatherSection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+
+
+
+
+
 
 #weatherSection {
     height: 50%;
@@ -116,4 +154,11 @@ button {
     height: 25%;
     display: flex;
     flex-direction: row;
+}
+
+#forecastSection div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
