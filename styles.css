@@ -92,7 +92,7 @@ button {
 }
 
 #weatherResults div {
-    width: 100%;
+    /*width: 100%;*/
     border: 1px solid black;
     background-color: transparent;
 }
@@ -117,18 +117,19 @@ button {
     justify-content: center;
 }
 
-#townSide > :first-child, #dateSide > :first-child, #weatherSection > :first-child {
+#townSide > :first-child, #dateSide > :first-child {
     font-size: 4rem;
+}
+
+#initialResults > :first-child {
+    font-size: 8rem;
+    text-align: center;
 }
 
 #dateSide {
     align-items: flex-end;
 }
 
-#locationSection div,  #forecastSection div {
-    flex: 1;
-    background-color: antiquewhite;
-}
 
 /* results area */
 
@@ -137,6 +138,26 @@ button {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    padding: 50px;
+    height: 50%;
+}
+
+/*middle section, specific days*/
+
+#resultsLeft {
+    text-align: right;
+}
+
+#resultsMiddle {
+    text-align: left;
+}
+
+#resultsLeft > :nth-child(2),  #resultsMiddle > :nth-child(2){
+    font-size: 8rem;
+}
+
+#resultsLeft > :first-child,  #resultsMiddle > :first-child {
+    text-align: center;
 }
 
 
@@ -145,9 +166,8 @@ button {
 
 
 
-
-#weatherSection {
-    height: 50%;
+#locationSection div,  #forecastSection div {
+    flex: 1;
 }
 
 #forecastSection {
@@ -161,4 +181,5 @@ button {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
