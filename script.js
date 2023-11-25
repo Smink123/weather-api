@@ -56,6 +56,8 @@ submitLocation.addEventListener("click", function () {
       const weatherData = await response.json();
       console.log(weatherData);
 
+      tempBackground(weatherData.current.temp_c);
+
       //objects for necessary info:
 
       //location info
@@ -86,8 +88,8 @@ submitLocation.addEventListener("click", function () {
       const twoSummary = dailyForecastSummary(weatherData, 1);
       const threeSummary = dailyForecastSummary(weatherData, 2);
 
-      showSummaryInfo(oneSummary, firstDaySummary);
-      showSummaryInfo(twoSummary, secondDaySummary);
+      showSummaryInfo(oneSummary, firstDaySummary, 'Today');
+      showSummaryInfo(twoSummary, secondDaySummary, 'Tomorrow');
       showSummaryInfo(threeSummary, thirdDaySummary);
 
       //3 day forecast full
@@ -95,47 +97,38 @@ submitLocation.addEventListener("click", function () {
       const dayTwo = dailyForecast(weatherData, 1);
       const dayThree = dailyForecast(weatherData, 2);
 
-
-      firstDaySummary.addEventListener("click", function() {
+      firstDaySummary.addEventListener("click", function () {
         showForecastData(dayOne);
-    });
+      });
 
-    secondDaySummary.addEventListener("click", function() {
-      showForecastData(dayTwo);
-  });
+      secondDaySummary.addEventListener("click", function () {
+        showForecastData(dayTwo);
+      });
 
-  thirdDaySummary.addEventListener("click", function() {
-    showForecastData(dayThree);
-});
-    
-    function showForecastData(obj) {
+      thirdDaySummary.addEventListener("click", function () {
+        showForecastData(dayThree);
+      });
+
+      function showForecastData(obj) {
         selectedWeatherSection.textContent = "";
         selectedWeatherSection.style.flexDirection = "row";
         initialResults.style.display = "none";
-    
+
         displayDataId("div", "", "resultsLeft", selectedWeatherSection);
         displayDataId("div", "", "resultsMiddle", selectedWeatherSection);
         displayDataId("div", "", "resultsRight", selectedWeatherSection);
-    
-        const resultsLeft = document.getElementById("resultsLeft");
-        const resultsMiddle = document.getElementById("resultsMiddle");
-        const resultsRight = document.getElementById("resultsRight");
-    
+
         displayDataId("p", "↓", "tempDownSymbol", resultsLeft);
         displayDataId("p", `${obj.minTempCelcius}°`, "minTemp", resultsLeft);
-        displayDataId("p", "daily condition: ", "conditionHeader", resultsLeft);
-    
+
         displayDataId("p", "↑", "tempUpSymbol", resultsMiddle);
-        displayDataId("p",`${obj.maxTempCelcius}°`, "toname5", resultsMiddle);
-        displayDataId("p", obj.condition, "conditionResult", resultsMiddle);
-    
+        displayDataId("p", `${obj.maxTempCelcius}°`, "toname5", resultsMiddle);
+
+        displayDataId("p", `daily condition: ${obj.condition}`, "conditionHeader", resultsRight);
         displayDataId("p", `sunrise: ${obj.sunrise}`, "sunrise", resultsRight);
         displayDataId("p", `sunset: ${obj.sunset}`, "sunset", resultsRight);
         displayDataId("p",`chance of rain: ${obj.chanceOfRain}%`, "rain", resultsRight);
-    }
-
-
-
+      }
     } catch (error) {
       console.error("Error fetching weather data:", error);
     }
@@ -171,10 +164,9 @@ function displayImage(imageData, imageParentElement) {
 
 function dailyForecastSummary(api, arrayNum) {
   const daySummary = {
-    date: api.forecast.forecastday[arrayNum].date,
     icon: api.forecast.forecastday[arrayNum].day.condition.icon,
-    maxTempCelcius: api.forecast.forecastday[arrayNum].day.maxtemp_c,
-    minTempCelcius: api.forecast.forecastday[arrayNum].day.mintemp_c,
+    maxTempCelcius: `${api.forecast.forecastday[arrayNum].day.maxtemp_c}°`,
+    minTempCelcius: `${api.forecast.forecastday[arrayNum].day.mintemp_c}°`,
   };
   return daySummary;
 }
@@ -217,12 +209,20 @@ function timeAndDate() {
   return timeObject;
 }
 
-function showSummaryInfo(object, parentElement) {
-  displayData("p", object.date, parentElement);
+//show forecast summary (bottom info)
+function showSummaryInfo(object, parentElement, day = null) { //This means that if the day argument is not provided when calling the function, it will default to null
+  if (day === null) {
+    const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const today = new Date();
+    const twoDaysFromNow = new Date(today);
+    twoDaysFromNow.setDate(today.getDate() + 2);
+    day = weekday[twoDaysFromNow.getDay()];
+  }
+  displayData("p", day, parentElement);
   displayImage(object.icon, parentElement);
-  displayData("p", object.minTempCelcius, parentElement);
-  displayData("p", object.maxTempCelcius, parentElement);
+  displayData("p", `low: ${object.minTempCelcius}  /  high: ${object.maxTempCelcius}`, parentElement);
 }
+
 
 function currentTemperature(api) {
   const currentTemp = {
@@ -246,6 +246,31 @@ function landingGreeting() {
   }
 }
 
+//change background gradient depending on the temp
+function tempBackground(objectTemp) {
+  let backgroundChange;
+
+  if (objectTemp < 2) {
+    backgroundChange = "linear-gradient(0deg, rgba(0,0,0,1) 27%, rgba(0,60,237,1) 57%, rgba(66,165,255,1) 78%, rgba(55,255,254,1) 97%)";
+  } else if (objectTemp >= 2 && objectTemp < 8) {
+    backgroundChange = "linear-gradient(0deg, rgba(0,0,0,1) 27%, rgba(21,189,255,1) 57%, rgba(14,255,218,1) 78%, rgba(146,255,154,1) 97%)";
+  } else if (objectTemp >= 8 && objectTemp < 15) {
+    backgroundChange = "linear-gradient(0deg, rgba(0,0,0,1) 27%, rgba(21,244,255,1) 57%, rgba(14,255,23,1) 78%, rgba(217,255,91,1) 97%)";
+  } else if (objectTemp >= 15 && objectTemp < 24) {
+    backgroundChange = "linear-gradient(0deg, rgba(0,0,0,1) 27%, rgba(21,255,195,1) 57%, rgba(90,255,14,1) 78%, rgba(206,255,8,1) 97%)";
+  } else if (objectTemp >= 24 && objectTemp < 31) {
+    backgroundChange = "linear-gradient(0deg, rgba(0,0,0,1) 27%, rgba(255,117,21,1) 57%, rgba(255,210,14,1) 78%, rgba(255,250,8,1) 97%)";
+  } else if (objectTemp >= 31 && objectTemp < 38) {
+    backgroundChange = "linear-gradient(0deg, rgba(0,0,0,1) 27%, rgba(255,69,21,1) 57%, rgba(255,133,14,1) 78%, rgba(255,220,0,1) 97%)";
+  } else {
+    backgroundChange = "linear-gradient(0deg, rgba(0,0,0,1) 27%, rgba(138,0,0,1) 57%, rgba(255,66,66,1) 78%, rgba(255,154,55,1) 97%)";
+  }
+
+  return resultsArea.style.background = backgroundChange;
+}
+
+
+
 //impliment function to convert the image src obtained by the original weatherData object to own custom icons.
 //Do this by using this link: https://www.weatherapi.com/docs/weather_conditions.json
 
@@ -257,3 +282,9 @@ function landingGreeting() {
 
 //e.g. if weatherData.condition === 'Light snow showers' {
 //  img.src = own custom link (sbsoloute link)
+
+
+
+
+//for errors, show the message in the object retrieved (i.e. No matching location found.)
+

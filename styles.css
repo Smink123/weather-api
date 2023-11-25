@@ -13,7 +13,7 @@ body {
     margin: 0;
     font-family: 'UncutSans', sans-serif;
     font-weight:100;
-    background-color: tomato;
+    background-color: black;
     display: flex;
     flex-direction: column;
 }
@@ -83,18 +83,19 @@ button {
 }
 
 #weatherResults {
-    background-color:violet;
+    background: rgb(0, 0, 0);
+    background: linear-gradient(0deg, rgba(0, 0, 0, 1) 27%, rgba(0, 60, 237, 1) 57%, rgba(66, 165, 255, 1) 78%, rgba(55, 255, 254, 1) 97%);
     width: 100%;
     display: flex;
     flex-direction: column;
     height: 100vh;
     padding: 20px 100px 20px 100px;
-}
+    animation: fadeAndMove 1s ease-in-out;
+  }
 
 #weatherResults div {
-    /*width: 100%;*/
-    border: 1px solid black;
     background-color: transparent;
+    border: 1px solid black;
 }
 
 /* standard font size */
@@ -139,7 +140,8 @@ button {
     align-items: center;
     flex-direction: column;
     padding: 50px;
-    height: 50%;
+    height: 45%;
+    color: aliceblue;
 }
 
 /*middle section, specific days*/
@@ -154,6 +156,8 @@ button {
 
 #resultsLeft > :nth-child(2),  #resultsMiddle > :nth-child(2){
     font-size: 8rem;
+    padding-left: 25px;
+    padding-right: 25px;
 }
 
 #resultsLeft > :first-child,  #resultsMiddle > :first-child {
@@ -171,7 +175,7 @@ button {
 }
 
 #forecastSection {
-    height: 25%;
+    height: 30%;
     display: flex;
     flex-direction: row;
 }
@@ -182,4 +186,17 @@ button {
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    color: aliceblue;
 }
+
+@keyframes fadeAndMove {
+    0% {
+      opacity: 0;
+      transform: translateY(-50px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
