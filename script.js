@@ -9,6 +9,8 @@ const inputLabel = document.querySelector("#searchArea label");
 const townSide = document.getElementById("townSide");
 const dateSide = document.getElementById("dateSide");
 const selectedWeatherSection = document.getElementById("weatherSection");
+const forecastSection = document.getElementById('forecastSection');
+const locationSection = document.getElementById('locationSection')
 const firstDaySummary = document.querySelector(
   "#forecastSection div:nth-child(1)"
 );
@@ -19,7 +21,9 @@ const thirdDaySummary = document.querySelector(
   "#forecastSection div:nth-child(3)"
 );
 
-const weatherApiKey = "303a084ecffd4c6d868113603231311";
+
+document.addEventListener('DOMContentLoaded', function () {
+  const weatherApiKey = "303a084ecffd4c6d868113603231311";
 
 resultsArea.style.display = "none";
 
@@ -33,6 +37,22 @@ submitLocation.addEventListener("click", function () {
   searchedArea.style.height = "auto";
   landingPage.style.height = "auto";
   searchBarArea.classList.add("searchBarAfter");
+
+
+  const elementsToFade = [dateSide, townSide, selectedWeatherSection, forecastSection, resultsArea]
+
+  function addClass(element) {
+    element.classList.remove('moving');
+    void element.offsetWidth;
+    element.classList.add('moving');
+  } 
+  elementsToFade.forEach(item => addClass(item))
+
+
+
+
+
+
   resultsArea.style.display = "flex";
   inputLabel.textContent = "enter location: ";
   greeting.textContent = "";
@@ -97,19 +117,29 @@ submitLocation.addEventListener("click", function () {
       const dayTwo = dailyForecast(weatherData, 1);
       const dayThree = dailyForecast(weatherData, 2);
 
+      function fadeInSelectedWeatherSection() {
+        selectedWeatherSection.classList.remove('moving');
+        void selectedWeatherSection.offsetWidth; // Trigger reflow to restart the animation
+        selectedWeatherSection.classList.add('moving');
+      }
+      
       firstDaySummary.addEventListener("click", function () {
-        showForecastData(dayOne);
+        fadeInSelectedWeatherSection();
+        showForecastData(dayOne, 0);
       });
-
+      
       secondDaySummary.addEventListener("click", function () {
-        showForecastData(dayTwo);
+        fadeInSelectedWeatherSection();
+        showForecastData(dayTwo, 1);
       });
-
+      
       thirdDaySummary.addEventListener("click", function () {
-        showForecastData(dayThree);
+        fadeInSelectedWeatherSection();
+        showForecastData(dayThree, 2);
       });
+      
 
-      function showForecastData(obj) {
+      function showForecastData(obj, day) {
         selectedWeatherSection.textContent = "";
         selectedWeatherSection.style.flexDirection = "row";
         initialResults.style.display = "none";
@@ -118,16 +148,34 @@ submitLocation.addEventListener("click", function () {
         displayDataId("div", "", "resultsMiddle", selectedWeatherSection);
         displayDataId("div", "", "resultsRight", selectedWeatherSection);
 
+        //left column
         displayDataId("p", "↓", "tempDownSymbol", resultsLeft);
         displayDataId("p", `${obj.minTempCelcius}°`, "minTemp", resultsLeft);
 
+        //middle column
         displayDataId("p", "↑", "tempUpSymbol", resultsMiddle);
         displayDataId("p", `${obj.maxTempCelcius}°`, "toname5", resultsMiddle);
 
-        displayDataId("p", `daily condition: ${obj.condition}`, "conditionHeader", resultsRight);
-        displayDataId("p", `sunrise: ${obj.sunrise}`, "sunrise", resultsRight);
-        displayDataId("p", `sunset: ${obj.sunset}`, "sunset", resultsRight);
-        displayDataId("p",`chance of rain: ${obj.chanceOfRain}%`, "rain", resultsRight);
+        //right column
+        displayDataClassId('div', '', 'line0', 'forecastInfoLine', resultsRight);
+        displayDataId('p', `forecast date: `, 'forecastDate', line0);
+        displayDataId('p', `${forecastDates(day)}`, 'forecastDate2', line0);
+
+        displayDataClassId('div', '', 'line1', 'forecastInfoLine', resultsRight);
+        displayDataId("p", `daily condition: `, "conditionHeader", line1);
+        displayDataId("p", `${obj.condition}`, "conditionHeader2", line1);
+
+        displayDataClassId('div', '', 'line2', 'forecastInfoLine', resultsRight);
+        displayDataId("p", `sunrise: `, "sunrise", line2);
+        displayDataId("p", `${obj.sunrise}`, "sunrise2", line2);
+
+        displayDataClassId('div', '', 'line3', 'forecastInfoLine', resultsRight);
+        displayDataId("p", `sunset: `, "sunset", line3);
+        displayDataId("p", `${obj.sunset}`, "sunset2", line3);
+
+        displayDataClassId('div', '', 'line4', 'forecastInfoLine', resultsRight);
+        displayDataId("p",`chance of rain: `, "rain", line4);
+        displayDataId("p",`${obj.chanceOfRain}%`, "rain2", line4);
       }
     } catch (error) {
       console.error("Error fetching weather data:", error);
@@ -136,6 +184,9 @@ submitLocation.addEventListener("click", function () {
 
   getWeather();
 });
+})
+
+
 
 function search() {
   const weatherLocation = searchedArea.value;
@@ -148,6 +199,15 @@ function displayDataId(elementType, data, id, parentElement) {
   element.id = id;
   parentElement.appendChild(element);
 }
+
+function displayDataClassId(elementType, data, id, className, parentElement) {
+  const element = document.createElement(elementType);
+  element.textContent = data;
+  element.id = id;
+  element.classList.add(className);  // Use classList instead of class
+  parentElement.appendChild(element);
+}
+
 
 function displayData(elementType, data, parentElement) {
   const element = document.createElement(elementType);
@@ -195,6 +255,16 @@ function locationInfo(api) {
   };
   return areaInfo;
 }
+
+function forecastDates(day) {
+  const date = new Date();
+  const specificDay = new Date(date);
+  specificDay.setDate(date.getDate() + day);
+  
+  const editedDay = specificDay.toString().split(" ");
+  return `${editedDay[0]} ${editedDay[2]} ${editedDay[1]}`
+}
+
 
 function timeAndDate() {
   let today = new Date();

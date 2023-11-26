@@ -192,11 +192,37 @@ button {
 @keyframes fadeAndMove {
     0% {
       opacity: 0;
-      transform: translateY(-50px);
+      transform: translateY(-80px);
     }
     100% {
       opacity: 1;
       transform: translateY(0);
     }
   }
+
+  .fadeAndMoving {
+    animation: fadeAndMove 1s ease-in-out;
+  }
   
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .moving {
+    animation: fadeIn 2s ease-in-out;
+  }
+
+
+  #rain, #sunset, #sunrise, #conditionHeader, #forecastDate {
+    opacity: 0.5;
+  }
+
+  .forecastInfoLine {
+    display: flex;
+    flex-direction: row;
+  }
