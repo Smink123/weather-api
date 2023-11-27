@@ -62,6 +62,8 @@ label {
 input {
     width: 600px;
     height: 90px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 input, button {
@@ -164,15 +166,21 @@ button {
     text-align: center;
 }
 
+/*left column*/
 
+#rain, #sunset, #sunrise, #conditionHeader, #forecastDate, #dayOneDiv p, #dayTwoDiv p, #dayThreeDiv p {
+    opacity: 0.5;
+  }
 
-
-
-
+  .forecastInfoLine {
+    display: flex;
+    flex-direction: row;
+  }
 
 #locationSection div,  #forecastSection div {
     flex: 1;
 }
+
 
 #forecastSection {
     height: 30%;
@@ -185,9 +193,23 @@ button {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
     color: aliceblue;
 }
+
+#dayOneDiv > :first-child:hover,  #dayTwoDiv > :first-child:hover, #dayThreeDiv > :first-child:hover{
+    opacity: 1;
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
 
 @keyframes fadeAndMove {
     0% {
@@ -215,14 +237,4 @@ button {
 
   .moving {
     animation: fadeIn 2s ease-in-out;
-  }
-
-
-  #rain, #sunset, #sunrise, #conditionHeader, #forecastDate {
-    opacity: 0.5;
-  }
-
-  .forecastInfoLine {
-    display: flex;
-    flex-direction: row;
   }

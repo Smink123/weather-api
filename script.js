@@ -9,184 +9,211 @@ const inputLabel = document.querySelector("#searchArea label");
 const townSide = document.getElementById("townSide");
 const dateSide = document.getElementById("dateSide");
 const selectedWeatherSection = document.getElementById("weatherSection");
-const forecastSection = document.getElementById('forecastSection');
-const locationSection = document.getElementById('locationSection')
-const firstDaySummary = document.querySelector(
-  "#forecastSection div:nth-child(1)"
-);
-const secondDaySummary = document.querySelector(
-  "#forecastSection div:nth-child(2)"
-);
-const thirdDaySummary = document.querySelector(
-  "#forecastSection div:nth-child(3)"
-);
+const forecastSection = document.getElementById("forecastSection");
+const locationSection = document.getElementById("locationSection");
+const firstDaySummary = document.querySelector("#forecastSection div:nth-child(1)");
+const secondDaySummary = document.querySelector("#forecastSection div:nth-child(2)");
+const thirdDaySummary = document.querySelector("#forecastSection div:nth-child(3)");
 
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener("DOMContentLoaded", function () {
   const weatherApiKey = "303a084ecffd4c6d868113603231311";
 
-resultsArea.style.display = "none";
+  resultsArea.style.display = "none";
 
-greeting.textContent = landingGreeting();
+  greeting.textContent = landingGreeting();
 
-submitLocation.addEventListener("click", function () {
-  //change structure of page:
-  inputLabel.style.fontSize = "1.5rem";
-  submitLocation.style.fontSize = "1.5rem";
-  searchedArea.style.fontSize = "1.5rem";
-  searchedArea.style.height = "auto";
-  landingPage.style.height = "auto";
-  searchBarArea.classList.add("searchBarAfter");
+  submitLocation.addEventListener("click", function () {
+    //change structure of page:
+    inputLabel.style.fontSize = "1.5rem";
+    submitLocation.style.fontSize = "1.5rem";
+    searchedArea.style.fontSize = "1.5rem";
+    searchedArea.style.height = "auto";
+    landingPage.style.height = "auto";
+    searchBarArea.classList.add("searchBarAfter");
 
+    const elementsToFade = [
+      dateSide,
+      townSide,
+      selectedWeatherSection,
+      forecastSection,
+      resultsArea,
+    ];
 
-  const elementsToFade = [dateSide, townSide, selectedWeatherSection, forecastSection, resultsArea]
-
-  function addClass(element) {
-    element.classList.remove('moving');
-    void element.offsetWidth;
-    element.classList.add('moving');
-  } 
-  elementsToFade.forEach(item => addClass(item))
-
-
-
-
-
-
-  resultsArea.style.display = "flex";
-  inputLabel.textContent = "enter location: ";
-  greeting.textContent = "";
-
-  //Reset results on search:
-  const weatherLocation = search();
-  searchedArea.value = "";
-  townSide.textContent = "";
-  dateSide.textContent = "";
-  selectedWeatherSection.textContent = "";
-  firstDaySummary.textContent = "";
-  secondDaySummary.textContent = "";
-  thirdDaySummary.textContent = "";
-
-  async function getWeather() {
-    try {
-      const response = await fetch(
-        `http://api.weatherapi.com/v1/forecast.json?key=${weatherApiKey}&q=${weatherLocation}&days=3&aqi=no&alerts=no`,
-        { mode: "cors" }
-      );
-      const weatherData = await response.json();
-      console.log(weatherData);
-
-      tempBackground(weatherData.current.temp_c);
-
-      //objects for necessary info:
-
-      //location info
-      const city = locationInfo(weatherData);
-      const time = timeAndDate();
-
-      for (const key in city) {
-        displayData("p", city[key], townSide);
-      }
-
-      for (const key in time) {
-        displayData("p", time[key], dateSide);
-      }
-
-      //current weather info:
-      const latestWeather = currentTemperature(weatherData);
-
-      const initialResults = document.createElement("div");
-      initialResults.id = "initialResults";
-      selectedWeatherSection.appendChild(initialResults);
-
-      for (const key in latestWeather) {
-        displayData("p", latestWeather[key], initialResults);
-      }
-
-      //3 day forecast summary
-      const oneSummary = dailyForecastSummary(weatherData, 0);
-      const twoSummary = dailyForecastSummary(weatherData, 1);
-      const threeSummary = dailyForecastSummary(weatherData, 2);
-
-      showSummaryInfo(oneSummary, firstDaySummary, 'Today');
-      showSummaryInfo(twoSummary, secondDaySummary, 'Tomorrow');
-      showSummaryInfo(threeSummary, thirdDaySummary);
-
-      //3 day forecast full
-      const dayOne = dailyForecast(weatherData, 0);
-      const dayTwo = dailyForecast(weatherData, 1);
-      const dayThree = dailyForecast(weatherData, 2);
-
-      function fadeInSelectedWeatherSection() {
-        selectedWeatherSection.classList.remove('moving');
-        void selectedWeatherSection.offsetWidth; // Trigger reflow to restart the animation
-        selectedWeatherSection.classList.add('moving');
-      }
-      
-      firstDaySummary.addEventListener("click", function () {
-        fadeInSelectedWeatherSection();
-        showForecastData(dayOne, 0);
-      });
-      
-      secondDaySummary.addEventListener("click", function () {
-        fadeInSelectedWeatherSection();
-        showForecastData(dayTwo, 1);
-      });
-      
-      thirdDaySummary.addEventListener("click", function () {
-        fadeInSelectedWeatherSection();
-        showForecastData(dayThree, 2);
-      });
-      
-
-      function showForecastData(obj, day) {
-        selectedWeatherSection.textContent = "";
-        selectedWeatherSection.style.flexDirection = "row";
-        initialResults.style.display = "none";
-
-        displayDataId("div", "", "resultsLeft", selectedWeatherSection);
-        displayDataId("div", "", "resultsMiddle", selectedWeatherSection);
-        displayDataId("div", "", "resultsRight", selectedWeatherSection);
-
-        //left column
-        displayDataId("p", "↓", "tempDownSymbol", resultsLeft);
-        displayDataId("p", `${obj.minTempCelcius}°`, "minTemp", resultsLeft);
-
-        //middle column
-        displayDataId("p", "↑", "tempUpSymbol", resultsMiddle);
-        displayDataId("p", `${obj.maxTempCelcius}°`, "toname5", resultsMiddle);
-
-        //right column
-        displayDataClassId('div', '', 'line0', 'forecastInfoLine', resultsRight);
-        displayDataId('p', `forecast date: `, 'forecastDate', line0);
-        displayDataId('p', `${forecastDates(day)}`, 'forecastDate2', line0);
-
-        displayDataClassId('div', '', 'line1', 'forecastInfoLine', resultsRight);
-        displayDataId("p", `daily condition: `, "conditionHeader", line1);
-        displayDataId("p", `${obj.condition}`, "conditionHeader2", line1);
-
-        displayDataClassId('div', '', 'line2', 'forecastInfoLine', resultsRight);
-        displayDataId("p", `sunrise: `, "sunrise", line2);
-        displayDataId("p", `${obj.sunrise}`, "sunrise2", line2);
-
-        displayDataClassId('div', '', 'line3', 'forecastInfoLine', resultsRight);
-        displayDataId("p", `sunset: `, "sunset", line3);
-        displayDataId("p", `${obj.sunset}`, "sunset2", line3);
-
-        displayDataClassId('div', '', 'line4', 'forecastInfoLine', resultsRight);
-        displayDataId("p",`chance of rain: `, "rain", line4);
-        displayDataId("p",`${obj.chanceOfRain}%`, "rain2", line4);
-      }
-    } catch (error) {
-      console.error("Error fetching weather data:", error);
+    function addClass(element) {
+      element.classList.remove("moving");
+      void element.offsetWidth;
+      element.classList.add("moving");
     }
-  }
+    elementsToFade.forEach((item) => addClass(item));
 
-  getWeather();
+    resultsArea.style.display = "flex";
+    inputLabel.textContent = "enter location: ";
+    greeting.textContent = "";
+
+    //Reset results on search:
+    const weatherLocation = search();
+    searchedArea.value = "";
+    townSide.textContent = "";
+    dateSide.textContent = "";
+    selectedWeatherSection.textContent = "";
+    firstDaySummary.textContent = "";
+    secondDaySummary.textContent = "";
+    thirdDaySummary.textContent = "";
+
+    async function getWeather() {
+      try {
+        const response = await fetch(
+          `http://api.weatherapi.com/v1/forecast.json?key=${weatherApiKey}&q=${weatherLocation}&days=3&aqi=no&alerts=no`,
+          { mode: "cors" }
+        );
+        const weatherData = await response.json();
+        console.log(weatherData);
+
+        tempBackground(weatherData.current.temp_c);
+
+        //objects for necessary info:
+
+        //location info
+        const city = locationInfo(weatherData);
+        const time = timeAndDate();
+
+        for (const key in city) {
+          displayData("p", city[key], townSide);
+        }
+
+        for (const key in time) {
+          displayData("p", time[key], dateSide);
+        }
+
+        //current weather info:
+        const latestWeather = currentTemperature(weatherData);
+
+        const initialResults = document.createElement("div");
+        initialResults.id = "initialResults";
+        selectedWeatherSection.appendChild(initialResults);
+
+        for (const key in latestWeather) {
+          displayData("p", latestWeather[key], initialResults);
+        }
+
+        //3 day forecast summary
+        const oneSummary = dailyForecastSummary(weatherData, 0);
+        const twoSummary = dailyForecastSummary(weatherData, 1);
+        const threeSummary = dailyForecastSummary(weatherData, 2);
+
+        showSummaryInfo(oneSummary, firstDaySummary, "Today");
+        showSummaryInfo(twoSummary, secondDaySummary, "Tomorrow");
+        showSummaryInfo(threeSummary, thirdDaySummary);
+
+        //3 day forecast full
+        const dayOne = dailyForecast(weatherData, 0);
+        const dayTwo = dailyForecast(weatherData, 1);
+        const dayThree = dailyForecast(weatherData, 2);
+
+        function fadeInSelectedWeatherSection() {
+          selectedWeatherSection.classList.remove("moving");
+          void selectedWeatherSection.offsetWidth; // Trigger reflow to restart the animation
+          selectedWeatherSection.classList.add("moving");
+        }
+
+        firstDaySummary.addEventListener("click", function () {
+          fadeInSelectedWeatherSection();
+          showForecastData(dayOne, 0);
+          allParagraphsInFirstDay.classList.add('opacityUp')
+        });
+
+        secondDaySummary.addEventListener("click", function () {
+          fadeInSelectedWeatherSection();
+          showForecastData(dayTwo, 1);
+        });
+
+        thirdDaySummary.addEventListener("click", function () {
+          fadeInSelectedWeatherSection();
+          showForecastData(dayThree, 2);
+        });
+
+        function showForecastData(obj, day) {
+          selectedWeatherSection.textContent = "";
+          selectedWeatherSection.style.flexDirection = "row";
+          initialResults.style.display = "none";
+
+          displayDataId("div", "", "resultsLeft", selectedWeatherSection);
+          displayDataId("div", "", "resultsMiddle", selectedWeatherSection);
+          displayDataId("div", "", "resultsRight", selectedWeatherSection);
+
+          //left column
+          displayDataId("p", "↓", "tempDownSymbol", resultsLeft);
+          displayDataId("p", `${obj.minTempCelcius}°`, "minTemp", resultsLeft);
+
+          //middle column
+          displayDataId("p", "↑", "tempUpSymbol", resultsMiddle);
+          displayDataId(
+            "p",
+            `${obj.maxTempCelcius}°`,
+            "toname5",
+            resultsMiddle
+          );
+
+          //right column
+          displayDataClassId(
+            "div",
+            "",
+            "line0",
+            "forecastInfoLine",
+            resultsRight
+          );
+          displayDataId("p", `forecast date: `, "forecastDate", line0);
+          displayDataId("p", `${forecastDates(day)}`, "forecastDate2", line0);
+
+          displayDataClassId(
+            "div",
+            "",
+            "line1",
+            "forecastInfoLine",
+            resultsRight
+          );
+          displayDataId("p", `daily condition: `, "conditionHeader", line1);
+          displayDataId("p", `${obj.condition}`, "conditionHeader2", line1);
+
+          displayDataClassId(
+            "div",
+            "",
+            "line2",
+            "forecastInfoLine",
+            resultsRight
+          );
+          displayDataId("p", `sunrise: `, "sunrise", line2);
+          displayDataId("p", `${obj.sunrise}`, "sunrise2", line2);
+
+          displayDataClassId(
+            "div",
+            "",
+            "line3",
+            "forecastInfoLine",
+            resultsRight
+          );
+          displayDataId("p", `sunset: `, "sunset", line3);
+          displayDataId("p", `${obj.sunset}`, "sunset2", line3);
+
+          displayDataClassId(
+            "div",
+            "",
+            "line4",
+            "forecastInfoLine",
+            resultsRight
+          );
+          displayDataId("p", `chance of rain: `, "rain", line4);
+          displayDataId("p", `${obj.chanceOfRain}%`, "rain2", line4);
+        }
+      } catch (error) {
+        console.error("Error fetching weather data:", error);
+      }
+    }
+
+    getWeather();
+  });
 });
-})
-
-
 
 function search() {
   const weatherLocation = searchedArea.value;
@@ -204,10 +231,9 @@ function displayDataClassId(elementType, data, id, className, parentElement) {
   const element = document.createElement(elementType);
   element.textContent = data;
   element.id = id;
-  element.classList.add(className);  // Use classList instead of class
+  element.classList.add(className); // Use classList instead of class
   parentElement.appendChild(element);
 }
-
 
 function displayData(elementType, data, parentElement) {
   const element = document.createElement(elementType);
@@ -260,11 +286,10 @@ function forecastDates(day) {
   const date = new Date();
   const specificDay = new Date(date);
   specificDay.setDate(date.getDate() + day);
-  
-  const editedDay = specificDay.toString().split(" ");
-  return `${editedDay[0]} ${editedDay[2]} ${editedDay[1]}`
-}
 
+  const editedDay = specificDay.toString().split(" ");
+  return `${editedDay[0]} ${editedDay[2]} ${editedDay[1]}`;
+}
 
 function timeAndDate() {
   let today = new Date();
@@ -280,9 +305,18 @@ function timeAndDate() {
 }
 
 //show forecast summary (bottom info)
-function showSummaryInfo(object, parentElement, day = null) { //This means that if the day argument is not provided when calling the function, it will default to null
+function showSummaryInfo(object, parentElement, day = null) {
+  //This means that if the day argument is not provided when calling the function, it will default to null
   if (day === null) {
-    const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const weekday = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
     const today = new Date();
     const twoDaysFromNow = new Date(today);
     twoDaysFromNow.setDate(today.getDate() + 2);
@@ -290,9 +324,9 @@ function showSummaryInfo(object, parentElement, day = null) { //This means that 
   }
   displayData("p", day, parentElement);
   displayImage(object.icon, parentElement);
-  displayData("p", `low: ${object.minTempCelcius}  /  high: ${object.maxTempCelcius}`, parentElement);
+  displayData("p", `↑ ${object.maxTempCelcius}`, parentElement);
+  displayData("p", `↓ ${object.minTempCelcius}`, parentElement);
 }
-
 
 function currentTemperature(api) {
   const currentTemp = {
@@ -321,26 +355,31 @@ function tempBackground(objectTemp) {
   let backgroundChange;
 
   if (objectTemp < 2) {
-    backgroundChange = "linear-gradient(0deg, rgba(0,0,0,1) 27%, rgba(0,60,237,1) 57%, rgba(66,165,255,1) 78%, rgba(55,255,254,1) 97%)";
+    backgroundChange =
+      "linear-gradient(0deg, rgba(0,0,0,1) 27%, rgba(0,60,237,1) 57%, rgba(66,165,255,1) 78%, rgba(55,255,254,1) 97%)";
   } else if (objectTemp >= 2 && objectTemp < 8) {
-    backgroundChange = "linear-gradient(0deg, rgba(0,0,0,1) 27%, rgba(21,189,255,1) 57%, rgba(14,255,218,1) 78%, rgba(146,255,154,1) 97%)";
+    backgroundChange =
+      "linear-gradient(0deg, rgba(0,0,0,1) 27%, rgba(21,189,255,1) 57%, rgba(14,255,218,1) 78%, rgba(146,255,154,1) 97%)";
   } else if (objectTemp >= 8 && objectTemp < 15) {
-    backgroundChange = "linear-gradient(0deg, rgba(0,0,0,1) 27%, rgba(21,244,255,1) 57%, rgba(14,255,23,1) 78%, rgba(217,255,91,1) 97%)";
+    backgroundChange =
+      "linear-gradient(0deg, rgba(0,0,0,1) 27%, rgba(21,244,255,1) 57%, rgba(14,255,23,1) 78%, rgba(217,255,91,1) 97%)";
   } else if (objectTemp >= 15 && objectTemp < 24) {
-    backgroundChange = "linear-gradient(0deg, rgba(0,0,0,1) 27%, rgba(21,255,195,1) 57%, rgba(90,255,14,1) 78%, rgba(206,255,8,1) 97%)";
+    backgroundChange =
+      "linear-gradient(0deg, rgba(0,0,0,1) 27%, rgba(21,255,195,1) 57%, rgba(90,255,14,1) 78%, rgba(206,255,8,1) 97%)";
   } else if (objectTemp >= 24 && objectTemp < 31) {
-    backgroundChange = "linear-gradient(0deg, rgba(0,0,0,1) 27%, rgba(255,117,21,1) 57%, rgba(255,210,14,1) 78%, rgba(255,250,8,1) 97%)";
+    backgroundChange =
+      "linear-gradient(0deg, rgba(0,0,0,1) 27%, rgba(255,117,21,1) 57%, rgba(255,210,14,1) 78%, rgba(255,250,8,1) 97%)";
   } else if (objectTemp >= 31 && objectTemp < 38) {
-    backgroundChange = "linear-gradient(0deg, rgba(0,0,0,1) 27%, rgba(255,69,21,1) 57%, rgba(255,133,14,1) 78%, rgba(255,220,0,1) 97%)";
+    backgroundChange =
+      "linear-gradient(0deg, rgba(0,0,0,1) 27%, rgba(255,69,21,1) 57%, rgba(255,133,14,1) 78%, rgba(255,220,0,1) 97%)";
   } else {
-    backgroundChange = "linear-gradient(0deg, rgba(0,0,0,1) 27%, rgba(138,0,0,1) 57%, rgba(255,66,66,1) 78%, rgba(255,154,55,1) 97%)";
+    backgroundChange =
+      "linear-gradient(0deg, rgba(0,0,0,1) 27%, rgba(138,0,0,1) 57%, rgba(255,66,66,1) 78%, rgba(255,154,55,1) 97%)";
   }
 
-  return resultsArea.style.background = backgroundChange;
+  return (resultsArea.style.background = backgroundChange);
 }
 
-
-
 //impliment function to convert the image src obtained by the original weatherData object to own custom icons.
 //Do this by using this link: https://www.weatherapi.com/docs/weather_conditions.json
 
@@ -352,9 +391,5 @@ function tempBackground(objectTemp) {
 
 //e.g. if weatherData.condition === 'Light snow showers' {
 //  img.src = own custom link (sbsoloute link)
-
-
-
 
 //for errors, show the message in the object retrieved (i.e. No matching location found.)
-
