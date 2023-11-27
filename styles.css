@@ -97,7 +97,7 @@ button {
 
 #weatherResults div {
     background-color: transparent;
-    border: 1px solid black;
+    /*border: 1px solid black*/
 }
 
 /* standard font size */
@@ -194,6 +194,12 @@ button {
     justify-content: center;
     align-items: center;
     color: aliceblue;
+    margin-left: 25px;
+    margin-right: 25px;
+    padding-left: 25px;
+    padding-right: 25px;
+    background-color: violet;
+    border-radius: 50px;
 }
 
 #dayOneDiv > :first-child:hover,  #dayTwoDiv > :first-child:hover, #dayThreeDiv > :first-child:hover{
@@ -237,4 +243,8 @@ button {
 
   .moving {
     animation: fadeIn 2s ease-in-out;
+  }
+
+  .forecastSelect {
+    border: 0.5px solid white;
   }

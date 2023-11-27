@@ -11,7 +11,7 @@ const dateSide = document.getElementById("dateSide");
 const selectedWeatherSection = document.getElementById("weatherSection");
 const forecastSection = document.getElementById("forecastSection");
 const locationSection = document.getElementById("locationSection");
-const firstDaySummary = document.querySelector("#forecastSection div:nth-child(1)");
+const firstDaySummary = document.getElementById('dayOneDiv')
 const secondDaySummary = document.querySelector("#forecastSection div:nth-child(2)");
 const thirdDaySummary = document.querySelector("#forecastSection div:nth-child(3)");
 
@@ -60,6 +60,10 @@ document.addEventListener("DOMContentLoaded", function () {
     firstDaySummary.textContent = "";
     secondDaySummary.textContent = "";
     thirdDaySummary.textContent = "";
+    thirdDaySummary.classList.remove('forecastSelect')
+          secondDaySummary.classList.remove('forecastSelect')
+      firstDaySummary.classList.remove('forecastSelect')
+
 
     async function getWeather() {
       try {
@@ -118,19 +122,29 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         firstDaySummary.addEventListener("click", function () {
+          secondDaySummary.classList.remove('forecastSelect')
+          thirdDaySummary.classList.remove('forecastSelect')
           fadeInSelectedWeatherSection();
           showForecastData(dayOne, 0);
-          allParagraphsInFirstDay.classList.add('opacityUp')
+          firstDaySummary.classList.add('forecastSelect')
         });
 
+        //GIVE SEPERATE CLASS, THEN REMOVE IT
+
         secondDaySummary.addEventListener("click", function () {
+          firstDaySummary.classList.remove('forecastSelect')
+          thirdDaySummary.classList.remove('forecastSelect')
           fadeInSelectedWeatherSection();
           showForecastData(dayTwo, 1);
+          secondDaySummary.classList.add('forecastSelect')
         });
 
         thirdDaySummary.addEventListener("click", function () {
+          firstDaySummary.classList.remove('forecastSelect')
+          secondDaySummary.classList.remove('forecastSelect')
           fadeInSelectedWeatherSection();
           showForecastData(dayThree, 2);
+          thirdDaySummary.classList.add('forecastSelect')
         });
 
         function showForecastData(obj, day) {
