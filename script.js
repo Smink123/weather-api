@@ -1,3 +1,8 @@
+import { landingGreeting, timeAndDate } from './timeDateFunctions.js';
+import { displayDataId, displayDataClassId, displayData, displayImage } from './displayingDataFunctions.js';
+
+
+
 //create specific objects and loop through them to display them
 const landingPage = document.getElementById("searchAreaLarge");
 const searchedArea = document.getElementById("searchLocation");
@@ -16,7 +21,6 @@ const secondDaySummary = document.querySelector("#forecastSection div:nth-child(
 const thirdDaySummary = document.querySelector("#forecastSection div:nth-child(3)");
 
 
-document.addEventListener("DOMContentLoaded", function () {
   const weatherApiKey = "303a084ecffd4c6d868113603231311";
 
   resultsArea.style.display = "none";
@@ -227,40 +231,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     getWeather();
   });
-});
 
 function search() {
   const weatherLocation = searchedArea.value;
   return weatherLocation;
 }
 
-function displayDataId(elementType, data, id, parentElement) {
-  const element = document.createElement(elementType);
-  element.textContent = data;
-  element.id = id;
-  parentElement.appendChild(element);
-}
-
-function displayDataClassId(elementType, data, id, className, parentElement) {
-  const element = document.createElement(elementType);
-  element.textContent = data;
-  element.id = id;
-  element.classList.add(className); // Use classList instead of class
-  parentElement.appendChild(element);
-}
-
-function displayData(elementType, data, parentElement) {
-  const element = document.createElement(elementType);
-  element.textContent = data;
-  parentElement.appendChild(element);
-}
-
-function displayImage(imageData, imageParentElement) {
-  const imageElement = document.createElement("img");
-  const imageLink = imageData;
-  imageElement.src = imageLink;
-  imageParentElement.appendChild(imageElement);
-}
 
 function dailyForecastSummary(api, arrayNum) {
   const daySummary = {
@@ -305,19 +281,6 @@ function forecastDates(day) {
   return `${editedDay[0]} ${editedDay[2]} ${editedDay[1]}`;
 }
 
-function timeAndDate() {
-  let today = new Date();
-  let todayArray = today.toString().split(" ").slice(0, 5);
-  let editedTime = todayArray[4].substring(0, todayArray[4].length - 3);
-
-  const timeObject = {
-    currentTime: editedTime,
-    currentDate: `${todayArray[0]} ${todayArray[2]} ${todayArray[1]}`,
-    currentYear: todayArray[3],
-  };
-  return timeObject;
-}
-
 //show forecast summary (bottom info)
 function showSummaryInfo(object, parentElement, day = null) {
   //This means that if the day argument is not provided when calling the function, it will default to null
@@ -349,19 +312,6 @@ function currentTemperature(api) {
     feelsLikeCelcius: `feels like ${api.current.feelslike_c}°`,
   };
   return currentTemp;
-}
-
-function landingGreeting() {
-  const d = new Date();
-  let hour = d.getHours();
-
-  if (hour >= 0 && hour < 12) {
-    return "good morning!";
-  } else if (hour >= 12 && hour < 17) {
-    return "good afternoon!";
-  } else {
-    return "good evening!";
-  }
 }
 
 //change background gradient depending on the temp
