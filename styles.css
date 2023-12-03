@@ -64,6 +64,7 @@ input {
     height: 90px;
     margin-left: 10px;
     margin-right: 10px;
+    margin-top: 20px;
 }
 
 input, button {
@@ -85,8 +86,8 @@ button {
 }
 
 #weatherResults {
-    background: rgb(0, 0, 0);
-    background: linear-gradient(0deg, rgba(0, 0, 0, 1) 27%, rgba(0, 60, 237, 1) 57%, rgba(66, 165, 255, 1) 78%, rgba(55, 255, 254, 1) 97%);
+    /*background: rgb(0, 0, 0);
+    background: linear-gradient(0deg, rgba(0, 0, 0, 1) 27%, rgba(0, 60, 237, 1) 57%, rgba(66, 165, 255, 1) 78%, rgba(55, 255, 254, 1) 97%);*/
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -198,7 +199,7 @@ button {
     margin-right: 25px;
     padding-left: 25px;
     padding-right: 25px;
-    background-color: violet;
+    /*background-color: violet;*/
     border-radius: 50px;
 }
 

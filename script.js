@@ -21,6 +21,7 @@ const locationSection = document.getElementById("locationSection");
 const firstDaySummary = document.getElementById('dayOneDiv')
 const secondDaySummary = document.querySelector("#forecastSection div:nth-child(2)");
 const thirdDaySummary = document.querySelector("#forecastSection div:nth-child(3)");
+const errorMessage = document.getElementById('errorMessage')
 
 
   const weatherApiKey = "303a084ecffd4c6d868113603231311";
@@ -36,6 +37,8 @@ const thirdDaySummary = document.querySelector("#forecastSection div:nth-child(3
     searchedArea.style.fontSize = "1.5rem";
     searchedArea.style.height = "auto";
     landingPage.style.height = "auto";
+    searchedArea.style.marginTop = '0px';
+    searchedArea.placeholder = 'enter location';
     searchBarArea.classList.add("searchBarAfter");
 
     const elementsToFade = [
@@ -54,7 +57,7 @@ const thirdDaySummary = document.querySelector("#forecastSection div:nth-child(3
     elementsToFade.forEach((item) => addClass(item));
 
     resultsArea.style.display = "flex";
-    inputLabel.textContent = "enter location: ";
+    inputLabel.textContent = "";
     greeting.textContent = "";
 
     //Reset results on search:
@@ -66,6 +69,8 @@ const thirdDaySummary = document.querySelector("#forecastSection div:nth-child(3
     firstDaySummary.textContent = "";
     secondDaySummary.textContent = "";
     thirdDaySummary.textContent = "";
+    errorMessage.textContent = "";
+    errorMessage.style.paddingBottom = '0px'
     thirdDaySummary.classList.remove('forecastSelect')
     secondDaySummary.classList.remove('forecastSelect')
     firstDaySummary.classList.remove('forecastSelect')
@@ -185,11 +190,20 @@ const thirdDaySummary = document.querySelector("#forecastSection div:nth-child(3
           displayingData("p", `${obj.chanceOfRain}%`, "rain2", '', line4);
         }
       } catch (error) {
-        console.error("Error fetching weather data:", error);
+        console.error("Hello. rror fetching weather data:", error);
+        errorMessage.textContent = 'Error: please check your location and try again.';
+        errorMessage.style.fontSize = '1.5rem'
+        errorMessage.style.color = 'red'
+        errorMessage.style.paddingBottom = '20px'
+        landingPage.style.background = 'none'
+        resultsArea.style.background = 'none';
+        /*displayingData('p', 'error hehehe', '', '', searchBarArea);*/
       }
     }
     getWeather();
   });
+
+  
 
 
 
