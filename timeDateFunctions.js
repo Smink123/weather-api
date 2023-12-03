@@ -23,3 +23,13 @@ export function landingGreeting() {
     };
     return timeObject;
   }
+
+
+  export function forecastDates(day) {
+    const date = new Date();
+    const specificDay = new Date(date);
+    specificDay.setDate(date.getDate() + day);
+  
+    const editedDay = specificDay.toString().split(" ");
+    return `${editedDay[0]} ${editedDay[2]} ${editedDay[1]}hello`;
+  }

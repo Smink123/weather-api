@@ -1,5 +1,7 @@
-import { landingGreeting, timeAndDate } from './timeDateFunctions.js';
-import { displayDataId, displayDataClassId, displayData, displayImage } from './displayingDataFunctions.js';
+import { landingGreeting, timeAndDate, forecastDates } from './timeDateFunctions.js';
+import { displayImage, displayingData } from './displayingDataFunctions.js';
+import { dailyForecastSummary, dailyForecast, locationInfo } from './apiObjects.js';
+import { tempBackground } from './visualFunctions.js';
 
 
 
@@ -65,8 +67,8 @@ const thirdDaySummary = document.querySelector("#forecastSection div:nth-child(3
     secondDaySummary.textContent = "";
     thirdDaySummary.textContent = "";
     thirdDaySummary.classList.remove('forecastSelect')
-          secondDaySummary.classList.remove('forecastSelect')
-      firstDaySummary.classList.remove('forecastSelect')
+    secondDaySummary.classList.remove('forecastSelect')
+    firstDaySummary.classList.remove('forecastSelect')
 
 
     async function getWeather() {
@@ -87,11 +89,11 @@ const thirdDaySummary = document.querySelector("#forecastSection div:nth-child(3
         const time = timeAndDate();
 
         for (const key in city) {
-          displayData("p", city[key], townSide);
+          displayingData("p", city[key], '', '', townSide);
         }
 
         for (const key in time) {
-          displayData("p", time[key], dateSide);
+          displayingData("p", time[key], '', '', dateSide);
         }
 
         //current weather info:
@@ -102,7 +104,7 @@ const thirdDaySummary = document.querySelector("#forecastSection div:nth-child(3
         selectedWeatherSection.appendChild(initialResults);
 
         for (const key in latestWeather) {
-          displayData("p", latestWeather[key], initialResults);
+          displayingData("p", latestWeather[key], '', '', initialResults);
         }
 
         //3 day forecast summary
@@ -119,11 +121,6 @@ const thirdDaySummary = document.querySelector("#forecastSection div:nth-child(3
         const dayTwo = dailyForecast(weatherData, 1);
         const dayThree = dailyForecast(weatherData, 2);
 
-        function fadeInSelectedWeatherSection() {
-          selectedWeatherSection.classList.remove("moving");
-          void selectedWeatherSection.offsetWidth; // Trigger reflow to restart the animation
-          selectedWeatherSection.classList.add("moving");
-        }
 
         firstDaySummary.addEventListener("click", function () {
           secondDaySummary.classList.remove('forecastSelect')
@@ -132,8 +129,6 @@ const thirdDaySummary = document.querySelector("#forecastSection div:nth-child(3
           showForecastData(dayOne, 0);
           firstDaySummary.classList.add('forecastSelect')
         });
-
-        //GIVE SEPERATE CLASS, THEN REMOVE IT
 
         secondDaySummary.addEventListener("click", function () {
           firstDaySummary.classList.remove('forecastSelect')
@@ -156,81 +151,62 @@ const thirdDaySummary = document.querySelector("#forecastSection div:nth-child(3
           selectedWeatherSection.style.flexDirection = "row";
           initialResults.style.display = "none";
 
-          displayDataId("div", "", "resultsLeft", selectedWeatherSection);
-          displayDataId("div", "", "resultsMiddle", selectedWeatherSection);
-          displayDataId("div", "", "resultsRight", selectedWeatherSection);
+          displayingData("div", "", "resultsLeft", '', selectedWeatherSection);
+          displayingData("div", "", "resultsMiddle", '', selectedWeatherSection);
+          displayingData("div", "", "resultsRight", '', selectedWeatherSection);
 
           //left column
-          displayDataId("p", "↓", "tempDownSymbol", resultsLeft);
-          displayDataId("p", `${obj.minTempCelcius}°`, "minTemp", resultsLeft);
+          displayingData("p", "↓", "tempDownSymbol", '', resultsLeft);
+          displayingData("p", `${obj.minTempCelcius}°`, "minTemp", '', resultsLeft);
 
           //middle column
-          displayDataId("p", "↑", "tempUpSymbol", resultsMiddle);
-          displayDataId(
-            "p",
-            `${obj.maxTempCelcius}°`,
-            "toname5",
-            resultsMiddle
-          );
+          displayingData("p", "↑", "tempUpSymbol", '', resultsMiddle);
+          displayingData("p", `${obj.maxTempCelcius}°`, "toname5", '', resultsMiddle);
 
           //right column
-          displayDataClassId(
-            "div",
-            "",
-            "line0",
-            "forecastInfoLine",
-            resultsRight
-          );
-          displayDataId("p", `forecast date: `, "forecastDate", line0);
-          displayDataId("p", `${forecastDates(day)}`, "forecastDate2", line0);
+          displayingData("div", "", "line0", "forecastInfoLine", resultsRight);
+          displayingData("p", `forecast date: `, "forecastDate", '', line0);
+          displayingData("p", `${forecastDates(day)}`, "forecastDate2", '', line0);
 
-          displayDataClassId(
-            "div",
-            "",
-            "line1",
-            "forecastInfoLine",
-            resultsRight
-          );
-          displayDataId("p", `daily condition: `, "conditionHeader", line1);
-          displayDataId("p", `${obj.condition}`, "conditionHeader2", line1);
+          displayingData("div", "", "line1", "forecastInfoLine", resultsRight);
+          displayingData("p", `daily condition: `, "conditionHeader", '', line1);
+          displayingData("p", `${obj.condition}`, "conditionHeader2", '', line1);
 
-          displayDataClassId(
-            "div",
-            "",
-            "line2",
-            "forecastInfoLine",
-            resultsRight
-          );
-          displayDataId("p", `sunrise: `, "sunrise", line2);
-          displayDataId("p", `${obj.sunrise}`, "sunrise2", line2);
+          displayingData("div", "", "line2", "forecastInfoLine", resultsRight);
+          displayingData("p", `sunrise: `, "sunrise", '', line2);
+          displayingData("p", `${obj.sunrise}`, "sunrise2", '', line2);
 
-          displayDataClassId(
-            "div",
-            "",
-            "line3",
-            "forecastInfoLine",
-            resultsRight
-          );
-          displayDataId("p", `sunset: `, "sunset", line3);
-          displayDataId("p", `${obj.sunset}`, "sunset2", line3);
+          displayingData("div", "", "line3", "forecastInfoLine", resultsRight);
+          displayingData("p", `sunset: `, "sunset", '', line3);
+          displayingData("p", `${obj.sunset}`, "sunset2", '', line3);
 
-          displayDataClassId(
-            "div",
-            "",
-            "line4",
-            "forecastInfoLine",
-            resultsRight
-          );
-          displayDataId("p", `chance of rain: `, "rain", line4);
-          displayDataId("p", `${obj.chanceOfRain}%`, "rain2", line4);
+          displayingData("div", "", "line4", "forecastInfoLine", resultsRight);
+          displayingData("p", `chance of rain: `, "rain", '', line4);
+          displayingData("p", `${obj.chanceOfRain}%`, "rain2", '', line4);
         }
       } catch (error) {
         console.error("Error fetching weather data:", error);
       }
     }
-
     getWeather();
   });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function search() {
   const weatherLocation = searchedArea.value;
@@ -238,48 +214,34 @@ function search() {
 }
 
 
-function dailyForecastSummary(api, arrayNum) {
-  const daySummary = {
-    icon: api.forecast.forecastday[arrayNum].day.condition.icon,
-    maxTempCelcius: `${api.forecast.forecastday[arrayNum].day.maxtemp_c}°`,
-    minTempCelcius: `${api.forecast.forecastday[arrayNum].day.mintemp_c}°`,
+
+
+
+//middle initial summary (current info)
+function currentTemperature(api) {
+  const currentTemp = {
+    currentCelcius: `${api.current.temp_c}°`,
+    currentHeader: "current temperature",
+    feelsLikeCelcius: `feels like ${api.current.feelslike_c}°`,
   };
-  return daySummary;
+  return currentTemp;
 }
 
-function dailyForecast(api, arrayNum) {
-  const day = {
-    icon: api.forecast.forecastday[arrayNum].day.condition.icon,
-    condition: api.forecast.forecastday[arrayNum].day.condition.text,
-    date: api.forecast.forecastday[arrayNum].date,
-    sunrise: api.forecast.forecastday[arrayNum].astro.sunrise,
-    sunset: api.forecast.forecastday[arrayNum].astro.sunset,
-    maxTempCelcius: api.forecast.forecastday[arrayNum].day.maxtemp_c,
-    maxTempFarenheight: api.forecast.forecastday[arrayNum].day.maxtemp_f,
-    minTempCelcius: api.forecast.forecastday[arrayNum].day.mintemp_c,
-    minTempFarenheight: api.forecast.forecastday[arrayNum].day.mintemp_f,
-    chanceOfRain: api.forecast.forecastday[arrayNum].day.daily_chance_of_rain,
-  };
-  return day;
+
+
+
+
+function fadeInSelectedWeatherSection() {
+  selectedWeatherSection.classList.remove("moving");
+  void selectedWeatherSection.offsetWidth; // Trigger reflow to restart the animation
+  selectedWeatherSection.classList.add("moving");
 }
 
-function locationInfo(api) {
-  const areaInfo = {
-    city: api.location.name,
-    region: api.location.region,
-    country: api.location.country,
-  };
-  return areaInfo;
-}
 
-function forecastDates(day) {
-  const date = new Date();
-  const specificDay = new Date(date);
-  specificDay.setDate(date.getDate() + day);
 
-  const editedDay = specificDay.toString().split(" ");
-  return `${editedDay[0]} ${editedDay[2]} ${editedDay[1]}`;
-}
+
+
+
 
 //show forecast summary (bottom info)
 function showSummaryInfo(object, parentElement, day = null) {
@@ -299,50 +261,20 @@ function showSummaryInfo(object, parentElement, day = null) {
     twoDaysFromNow.setDate(today.getDate() + 2);
     day = weekday[twoDaysFromNow.getDay()];
   }
-  displayData("p", day, parentElement);
+  displayingData("p", day, '', '', parentElement);
   displayImage(object.icon, parentElement);
-  displayData("p", `↑ ${object.maxTempCelcius}`, parentElement);
-  displayData("p", `↓ ${object.minTempCelcius}`, parentElement);
+  displayingData("p", `↑ ${object.maxTempCelcius}`, '', '', parentElement);
+  displayingData("p", `↓ ${object.minTempCelcius}`, '', '', parentElement);
 }
 
-function currentTemperature(api) {
-  const currentTemp = {
-    currentCelcius: `${api.current.temp_c}°`,
-    currentHeader: "current temperature",
-    feelsLikeCelcius: `feels like ${api.current.feelslike_c}°`,
-  };
-  return currentTemp;
-}
 
-//change background gradient depending on the temp
-function tempBackground(objectTemp) {
-  let backgroundChange;
 
-  if (objectTemp < 2) {
-    backgroundChange =
-      "linear-gradient(0deg, rgba(0,0,0,1) 27%, rgba(0,60,237,1) 57%, rgba(66,165,255,1) 78%, rgba(55,255,254,1) 97%)";
-  } else if (objectTemp >= 2 && objectTemp < 8) {
-    backgroundChange =
-      "linear-gradient(0deg, rgba(0,0,0,1) 27%, rgba(21,189,255,1) 57%, rgba(14,255,218,1) 78%, rgba(146,255,154,1) 97%)";
-  } else if (objectTemp >= 8 && objectTemp < 15) {
-    backgroundChange =
-      "linear-gradient(0deg, rgba(0,0,0,1) 27%, rgba(21,244,255,1) 57%, rgba(14,255,23,1) 78%, rgba(217,255,91,1) 97%)";
-  } else if (objectTemp >= 15 && objectTemp < 24) {
-    backgroundChange =
-      "linear-gradient(0deg, rgba(0,0,0,1) 27%, rgba(21,255,195,1) 57%, rgba(90,255,14,1) 78%, rgba(206,255,8,1) 97%)";
-  } else if (objectTemp >= 24 && objectTemp < 31) {
-    backgroundChange =
-      "linear-gradient(0deg, rgba(0,0,0,1) 27%, rgba(255,117,21,1) 57%, rgba(255,210,14,1) 78%, rgba(255,250,8,1) 97%)";
-  } else if (objectTemp >= 31 && objectTemp < 38) {
-    backgroundChange =
-      "linear-gradient(0deg, rgba(0,0,0,1) 27%, rgba(255,69,21,1) 57%, rgba(255,133,14,1) 78%, rgba(255,220,0,1) 97%)";
-  } else {
-    backgroundChange =
-      "linear-gradient(0deg, rgba(0,0,0,1) 27%, rgba(138,0,0,1) 57%, rgba(255,66,66,1) 78%, rgba(255,154,55,1) 97%)";
-  }
 
-  return (resultsArea.style.background = backgroundChange);
-}
+
+
+
+
+
 
 //impliment function to convert the image src obtained by the original weatherData object to own custom icons.
 //Do this by using this link: https://www.weatherapi.com/docs/weather_conditions.json
