@@ -180,7 +180,7 @@ const errorMessage = document.getElementById('errorMessage')
           displayingData("div", "", "line2", "forecastInfoLine", resultsRight);
           displayingData("p", `sunrise: `, "sunrise", '', line2);
           displayingData("p", `${obj.sunrise}`, "sunrise2", '', line2);
-
+          
           displayingData("div", "", "line3", "forecastInfoLine", resultsRight);
           displayingData("p", `sunset: `, "sunset", '', line3);
           displayingData("p", `${obj.sunset}`, "sunset2", '', line3);
@@ -203,6 +203,8 @@ const errorMessage = document.getElementById('errorMessage')
     getWeather();
   });
 
+
+  expect(result).not.toBe(0);
   
 
 
