@@ -197,15 +197,10 @@ const errorMessage = document.getElementById('errorMessage')
         errorMessage.style.paddingBottom = '20px'
         landingPage.style.background = 'none'
         resultsArea.style.background = 'none';
-        /*displayingData('p', 'error hehehe', '', '', searchBarArea);*/
       }
     }
     getWeather();
-  });
-
-
-  expect(result).not.toBe(0);
-  
+  });  
 
 
 

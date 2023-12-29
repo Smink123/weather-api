@@ -31,5 +31,5 @@ export function landingGreeting() {
     specificDay.setDate(date.getDate() + day);
   
     const editedDay = specificDay.toString().split(" ");
-    return `${editedDay[0]} ${editedDay[2]} ${editedDay[1]}hello`;
+    return `${editedDay[0]} ${editedDay[2]} ${editedDay[1]}`;
   }

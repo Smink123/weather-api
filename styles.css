@@ -74,7 +74,7 @@ input, button {
     color: white;
     font-family: 'UncutSans', sans-serif;
     font-weight:100;
-    opacity: 0.5;
+    opacity: 0.7;
     padding: 10px;
 }
 
@@ -96,10 +96,10 @@ button {
     animation: fadeAndMove 1s ease-in-out;
   }
 
-#weatherResults div {
+/* #weatherResults div {
     background-color: transparent;
-    /*border: 1px solid black*/
-}
+    border: 1px solid black
+} */
 
 /* standard font size */
 #locationSection p, #weatherSection p, #forecastSection p {
@@ -169,7 +169,8 @@ button {
 
 /*left column*/
 
-#rain, #sunset, #sunrise, #conditionHeader, #forecastDate, #dayOneDiv p, #dayTwoDiv p, #dayThreeDiv p {
+#rain, #sunset, #sunrise, #conditionHeader, #forecastDate {
+    /* , #dayOneDiv p, #dayTwoDiv p, #dayThreeDiv p */
     opacity: 0.5;
   }
 
@@ -178,15 +179,16 @@ button {
     flex-direction: row;
   }
 
-#locationSection div,  #forecastSection div {
+#locationSection div {
     flex: 1;
 }
-
 
 #forecastSection {
     height: 30%;
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
 
 #forecastSection div {
@@ -194,28 +196,31 @@ button {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: aliceblue;
-    margin-left: 25px;
+    width: 200px;
+    /* color: aliceblue; */
+    /* margin-left: 25px;
     margin-right: 25px;
     padding-left: 25px;
-    padding-right: 25px;
-    /*background-color: violet;*/
-    border-radius: 50px;
+    padding-right: 25px; */
+    /* background-color: aqua; */
+    /* margin-left: 100px;
+    margin-right: 100px; */
+    /* border-radius: 50px; */
 }
+
+#forecastSection p {
+    color: white;
+    opacity: 1;
+}
+/* #forecastSection div:hover {
+    color: white;
+    opacity: 1;
+} */
 
 #dayOneDiv > :first-child:hover,  #dayTwoDiv > :first-child:hover, #dayThreeDiv > :first-child:hover{
     opacity: 1;
     cursor: pointer;
 }
-
-
-
-
-
-
-
-
-
 
 
 @keyframes fadeAndMove {
@@ -247,5 +252,164 @@ button {
   }
 
   .forecastSelect {
-    border: 0.5px solid white;
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.5);
+    border-top: 0.5px solid transparent;
   }
+
+  @media (max-width: 1300px) {
+
+    #resultsLeft > :nth-child(2),  #resultsMiddle > :nth-child(2){
+        font-size: 5rem;
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+    #locationSection p, #weatherSection p, #forecastSection p {
+        margin: 5px;
+        font-size: 1rem;
+    }
+    #resultsRight {
+        width: 300px;
+    }
+    #initialResults > :first-child {
+        font-size: 5rem;
+    }
+    #townSide > :first-child, #dateSide > :first-child {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 1100px) {
+    #searchAreaLarge p {
+        font-size: 2.5rem;
+    }
+    label, input {
+        font-size: 2.5rem;
+    }
+    input {
+        height: auto;
+        width: 400px;
+    }
+    #resultsRight {
+        min-width: 230px;
+    }
+}
+
+
+@media (max-width: 800px) {
+
+    #resultsLeft > :nth-child(2),  #resultsMiddle > :nth-child(2){
+        font-size: 3rem;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    #weatherSection {
+        flex-wrap: wrap;
+    }
+    #resultsRight div {
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+@media (max-width: 600px) {
+
+    #resultsLeft > :nth-child(2),  #resultsMiddle > :nth-child(2){
+        font-size: 3rem;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    #weatherSection {
+        width: auto;
+        text-align: center;
+        padding: 0;
+    }
+    #weatherResults {
+        padding: 0;
+    }
+    #locationSection {
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+
+    #searchLocation {
+        width: 200px;
+    }
+
+    #resultsRight {
+        width: 400px;
+    }
+
+    #resultsRight div {
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+
+@media (max-width: 300px) {
+
+    #weatherSection {
+        min-width: 300px;
+        padding: 0;
+    }
+
+    body {
+        width: 100vw;
+    }
+
+    #searchLocation {
+        width: 100px;
+        font-size: 1rem;
+    }
+
+    #searchAreaLarge p {
+        font-size: 1rem;
+    }
+
+    label {
+        font-size: 1rem;
+    }
+
+    #submitLocation {
+        font-size: 1rem;
+    }
+
+}
+
+@media (max-height: 800px) {
+
+    #weatherSection {
+        height: 600px;
+    }
+
+    #locationSection {
+        height: 200px;
+    }
+}
+
+
+
+
+/* @media (max-width: 300px) {
+    input {
+        width: 180px;
+    }
+
+    #weatherSection {
+        height: 600px;
+        width: 300px;
+        background-color: aqua;
+        margin: 0;
+        padding: 0;
+    }
+} */
+
+@media (max-height: 600px) {
+
+    input {
+        width: 180px;
+    }
+
+}
