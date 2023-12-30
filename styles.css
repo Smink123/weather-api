@@ -27,6 +27,11 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 50px;
+}
+
+#searchAreaLarge p {
+    text-align: center;
 }
 
 #searchArea {
@@ -96,11 +101,6 @@ button {
     animation: fadeAndMove 1s ease-in-out;
   }
 
-/* #weatherResults div {
-    background-color: transparent;
-    border: 1px solid black
-} */
-
 /* standard font size */
 #locationSection p, #weatherSection p, #forecastSection p {
     margin: 5px;
@@ -157,6 +157,11 @@ button {
     text-align: left;
 }
 
+#resultsRight {
+    width: auto;
+    text-wrap: nowrap;
+}
+
 #resultsLeft > :nth-child(2),  #resultsMiddle > :nth-child(2){
     font-size: 8rem;
     padding-left: 25px;
@@ -170,7 +175,6 @@ button {
 /*left column*/
 
 #rain, #sunset, #sunrise, #conditionHeader, #forecastDate {
-    /* , #dayOneDiv p, #dayTwoDiv p, #dayThreeDiv p */
     opacity: 0.5;
   }
 
@@ -197,30 +201,19 @@ button {
     justify-content: center;
     align-items: center;
     width: 200px;
-    /* color: aliceblue; */
-    /* margin-left: 25px;
-    margin-right: 25px;
-    padding-left: 25px;
-    padding-right: 25px; */
-    /* background-color: aqua; */
-    /* margin-left: 100px;
-    margin-right: 100px; */
-    /* border-radius: 50px; */
+    padding: 10px 20px;
 }
 
 #forecastSection p {
     color: white;
     opacity: 1;
 }
-/* #forecastSection div:hover {
-    color: white;
-    opacity: 1;
-} */
 
 #dayOneDiv > :first-child:hover,  #dayTwoDiv > :first-child:hover, #dayThreeDiv > :first-child:hover{
     opacity: 1;
     cursor: pointer;
 }
+
 
 
 @keyframes fadeAndMove {
@@ -252,8 +245,8 @@ button {
   }
 
   .forecastSelect {
-    border-bottom: 0.5px solid rgba(255, 255, 255, 0.5);
-    border-top: 0.5px solid transparent;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
   }
 
   @media (max-width: 1300px) {
@@ -267,9 +260,7 @@ button {
         margin: 5px;
         font-size: 1rem;
     }
-    #resultsRight {
-        width: 300px;
-    }
+
     #initialResults > :first-child {
         font-size: 5rem;
     }
@@ -290,7 +281,11 @@ button {
         width: 400px;
     }
     #resultsRight {
-        min-width: 230px;
+        text-wrap: nowrap;
+        width: auto;
+    }
+    button {
+        font-size: 2.5rem;
     }
 }
 
@@ -304,6 +299,7 @@ button {
     }
     #weatherSection {
         flex-wrap: wrap;
+        margin: 25px;
     }
     #resultsRight div {
         text-align: center;
@@ -336,14 +332,14 @@ button {
         width: 200px;
     }
 
-    #resultsRight {
-        width: 400px;
-    }
-
     #resultsRight div {
         text-align: center;
         justify-content: center;
         align-items: center;
+    }
+
+    #forecastSection {
+        padding: 0 25px;
     }
 }
 
@@ -387,24 +383,11 @@ button {
     #locationSection {
         height: 200px;
     }
+
+    #forecastSection {
+        margin-top: 25px;
+    }
 }
-
-
-
-
-/* @media (max-width: 300px) {
-    input {
-        width: 180px;
-    }
-
-    #weatherSection {
-        height: 600px;
-        width: 300px;
-        background-color: aqua;
-        margin: 0;
-        padding: 0;
-    }
-} */
 
 @media (max-height: 600px) {
 

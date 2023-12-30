@@ -37,6 +37,7 @@ const errorMessage = document.getElementById('errorMessage')
     searchedArea.style.fontSize = "1.5rem";
     searchedArea.style.height = "auto";
     landingPage.style.height = "auto";
+    landingPage.style.padding = '0px';
     searchedArea.style.marginTop = '0px';
     searchedArea.placeholder = 'enter location';
     searchBarArea.classList.add("searchBarAfter");
@@ -190,11 +191,12 @@ const errorMessage = document.getElementById('errorMessage')
           displayingData("p", `${obj.chanceOfRain}%`, "rain2", '', line4);
         }
       } catch (error) {
-        console.error("Hello. rror fetching weather data:", error);
-        errorMessage.textContent = 'Error: please check your location and try again.';
+        console.error("Hello. error fetching weather data:", error);
+        errorMessage.textContent = 'ERROR:\nPlease check your location and try again.';
+        errorMessage.style.whiteSpace = 'pre-line';
         errorMessage.style.fontSize = '1.5rem'
-        errorMessage.style.color = 'red'
-        errorMessage.style.paddingBottom = '20px'
+        errorMessage.style.color = '#ff2424'
+        errorMessage.style.padding = '0px 25px 20px 25px'
         landingPage.style.background = 'none'
         resultsArea.style.background = 'none';
       }
