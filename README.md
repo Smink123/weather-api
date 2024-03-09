@@ -2,11 +2,24 @@
 
 ## Introduction
 
-A weather forecast site using a weather API. This project was made in accordance with the Odin Project's Weather App project.
+A weather forecast site using a weather API. This project was made in accordance with the Odin Project's Weather App project. It was one of my first opportunities working with an API and manipulating the DOM directly.
 
-## How to use
+## Introduction
 
-Users can search for any location by typing in their city or town into the search bar. In the results section, users will be shown the current temperature and details, in addition to a forecast for the next three days.
+This project utilises a weather API to provide users with up-to-date weather information for any location they search for. Inspired by the Odin Project's Weather App project, this project marked one of my initial experiences working with APIs and directly manipulating the DOM.
+
+Through this project, I gained experience in integrating external data sources, handling API responses, and dynamically updating the user interface based on retrieved data.
+
+## Features
+
+- **Location Search**: Users can find weather information for any location by typing in the name of their city or town into the search bar.
+  
+- **Current Weather Display**: Upon searching, users are presented with the current temperature and detailed weather information for the specified location.
+  
+- **Three-Day Forecast**: In addition to the current weather, users can view a forecast for the next three days.
+
+- **Dynamic Color Scheme**: The color scheme of the interface dynamically adjusts based on the temperature, providing visual cues to users.
+
 
 ## Technologies Used
 
